@@ -1,175 +1,237 @@
-# Shazam-Style Audio Recognition Engine
+# 🎵 Shazam-Style Audio Recognition Engine
 
-A Python-based audio fingerprinting system that can identify songs from short audio clips, similar to how Shazam works. This project implements audio fingerprinting using spectral peak analysis and hash-based matching.
+A powerful audio fingerprinting and recognition system built with Python and FastAPI that can identify songs from audio snippets, similar to Shazam.
 
-## Features
+![Audio Recognition Demo](https://img.shields.io/badge/Status-Active-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-- **Audio Fingerprinting**: Extract unique audio fingerprints from songs using spectral analysis
-- **Fast Recognition**: Identify songs from short audio clips (even a few seconds)
-- **Web Interface**: Simple HTML frontend for easy interaction
-- **REST API**: FastAPI backend with endpoints for fingerprinting and identification
-- **Database Storage**: SQLite database for storing song fingerprints
-- **Multiple Audio Formats**: Support for MP3, WAV, M4A, and FLAC files
+## ✨ Features
 
-## How It Works
+- **🔍 Audio Identification**: Upload an audio snippet and identify the song from your database
+- **📁 Song Library Management**: Add songs to build your own recognition database
+- **🌐 Web Interface**: Beautiful, responsive frontend for easy interaction
+- **🚀 REST API**: Full-featured API for programmatic access
+- **📊 Real-time Statistics**: Track your database size and performance metrics
+- **🎯 High Accuracy**: Advanced fingerprinting algorithms for reliable recognition
+- **🔄 Cross-platform**: Works on Windows, macOS, and Linux
 
-1. **Fingerprinting**: The system analyzes audio files to extract spectral peaks and creates unique hash fingerprints
-2. **Storage**: Fingerprints are stored in a SQLite database along with song metadata
-3. **Recognition**: When identifying a song, it extracts fingerprints from the audio clip and matches them against the database
-4. **Matching**: Uses combinatorial hashing to find coherent matches and calculate confidence scores
+## 🛠️ Technology Stack
 
-## Installation
+- **Backend**: FastAPI, Python 3.8+
+- **Audio Processing**: Librosa, NumPy, SciPy
+- **Database**: SQLite with indexed fingerprints
+- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
+- **API Documentation**: Automatic OpenAPI/Swagger docs
 
-1. Clone the repository:
-```bash
-git clone https://github.com/Coderopp/audiofind.git
-```
+## 🚀 Quick Start
 
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### Prerequisites
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+- Python 3.8 or higher
+- pip package manager
 
-## Usage
+### Installation
 
-### Running the Server
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/shazam-style-audio-recognition.git
+   cd shazam-style-audio-recognition
+   ```
 
-Start the FastAPI server:
-```bash
-python app.py
-```
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-The server will start on `http://localhost:8000`
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Start the backend server**
+   ```bash
+   python app.py
+   # Or using uvicorn directly:
+   uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+   ```
+
+5. **Open the web interface**
+   - Navigate to `frontend/index.html` in your browser
+   - Or serve it with a local server:
+   ```bash
+   cd frontend
+   python -m http.server 3000
+   ```
+   Then visit `http://localhost:3000`
+
+## 📖 Usage
 
 ### Web Interface
 
-Open your browser and go to `http://localhost:8000` to access the web interface where you can:
-- Upload audio files to add to the database
-- Upload audio clips to identify songs
+1. **Adding Songs**: 
+   - Go to the "Add Song" tab
+   - Enter song title and artist
+   - Upload an audio file (MP3, WAV, M4A, FLAC)
+   - Click "Create Fingerprint"
 
-### API Endpoints
+2. **Identifying Songs**:
+   - Go to the "Identify Song" tab
+   - Upload an audio snippet
+   - View the identification results with confidence scores
 
-- `GET /` - Web interface
-- `POST /fingerprint` - Add a song to the database
-- `POST /identify` - Identify a song from an audio clip
-- `GET /songs` - List all songs in the database
-- `GET /stats` - Get database statistics
-- `GET /health` - Health check
-- `POST /reset` - Reset the database
+3. **Managing Library**:
+   - Browse your song collection in the "Song Library" tab
+   - Search through your songs
+   - View database statistics
 
-### Command Line Testing
+### API Usage
 
-Use the included client test script:
+The backend provides a full REST API. Here are the main endpoints:
+
+#### Add a song to the database
+```bash
+curl -X POST "http://localhost:8000/fingerprint" \
+  -F "audio=@song.mp3" \
+  -F "title=Song Title" \
+  -F "artist=Artist Name"
+```
+
+#### Identify a song
+```bash
+curl -X POST "http://localhost:8000/identify" \
+  -F "audio=@snippet.mp3"
+```
+
+#### Get all songs
+```bash
+curl "http://localhost:8000/songs"
+```
+
+### Python Client
+
+Use the included client for programmatic access:
+
+```python
+from client_test import AudioFingerprintClient
+
+client = AudioFingerprintClient('http://localhost:8000')
+
+# Add a song
+result = client.fingerprint_song('path/to/song.mp3', 'Song Title', 'Artist')
+
+# Identify a song
+result = client.identify_song('path/to/snippet.mp3')
+```
+
+## 🧪 Testing
+
+Run the test client to verify everything works:
+
 ```bash
 python client_test.py
 ```
 
-This script provides both automated testing and an interactive mode for testing the system.
+Choose option 1 for automated testing or option 2 for interactive mode.
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 ├── app.py                 # FastAPI backend server
-├── client_test.py         # Test client with interactive mode
-├── requirements.txt       # Python dependencies
-├── fingerprints.db       # SQLite database (created automatically)
-├── frontend/             # Web interface files
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
-└── audio_samples/        # Directory for test audio files
+├── client_test.py        # Python client for testing
+├── requirements.txt      # Python dependencies
+├── fingerprints.db      # SQLite database (created automatically)
+├── audio_samples/       # Directory for sample audio files
+├── frontend/            # Web interface
+│   ├── index.html      # Main HTML file
+│   ├── style.css       # Styling
+│   └── script.js       # JavaScript functionality
+└── README.md           # This file
 ```
 
-## API Reference
+## 🔧 API Documentation
 
-### Fingerprint a Song
-```http
-POST /fingerprint
-Content-Type: multipart/form-data
+Once the server is running, visit:
+- **Interactive API Docs**: `http://localhost:8000/docs`
+- **Alternative Docs**: `http://localhost:8000/redoc`
 
-Parameters:
-- audio: Audio file (MP3, WAV, M4A, FLAC)
-- title: Song title (optional)
-- artist: Artist name (optional)
+### Main Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | API information |
+| GET | `/health` | Health check |
+| GET | `/songs` | List all songs |
+| POST | `/fingerprint` | Add song to database |
+| POST | `/identify` | Identify song from audio |
+| GET | `/stats` | Database statistics |
+| POST | `/reset` | Reset database |
+
+## 🎯 How It Works
+
+The audio recognition engine uses several key components:
+
+1. **Audio Preprocessing**: Convert audio to a standard format and extract features
+2. **Spectrogram Analysis**: Generate mel-scaled spectrograms for frequency analysis
+3. **Peak Detection**: Identify significant peaks in the frequency domain
+4. **Fingerprint Generation**: Create unique hashes from peak relationships
+5. **Database Storage**: Store fingerprints with time offsets for quick lookup
+6. **Matching Algorithm**: Compare query fingerprints against the database
+7. **Confidence Scoring**: Calculate match confidence based on coherent time alignments
+
+## 🔒 Security Notes
+
+- The current CORS configuration allows `localhost:3000` only
+- For production deployment, configure proper CORS origins
+- Consider implementing authentication for write operations
+- Validate file uploads and implement size limits
+
+## 🚀 Deployment
+
+### Local Production
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
-### Identify a Song
-```http
-POST /identify
-Content-Type: multipart/form-data
-
-Parameters:
-- audio: Audio clip to identify
+### Docker (Optional)
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### Get All Songs
-```http
-GET /songs
-```
-
-### Database Statistics
-```http
-GET /stats
-```
-
-## Technical Details
-
-### Audio Processing
-- Uses librosa for audio analysis
-- Extracts spectral peaks using STFT (Short-Time Fourier Transform)
-- Implements constellation mapping for robust fingerprint generation
-
-### Fingerprinting Algorithm
-- Converts audio to mono and resamples to 22.05 kHz
-- Applies STFT with specific window parameters
-- Identifies spectral peaks above threshold
-- Creates combinatorial hashes from peak pairs
-- Stores hashes with time offsets for temporal matching
-
-### Matching Process
-- Extracts fingerprints from query audio
-- Performs database lookup for matching hashes
-- Calculates time differences for coherent matching
-- Returns best match with confidence score
-
-## Dependencies
-
-- **FastAPI**: Web framework for the API
-- **librosa**: Audio analysis and processing
-- **numpy**: Numerical computations
-- **scipy**: Scientific computing
-- **soundfile**: Audio file I/O
-- **uvicorn**: ASGI server
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📝 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - Inspired by the Shazam audio recognition algorithm
-- Built using librosa for robust audio processing
-- FastAPI for the modern web framework
+- Built with the amazing [Librosa](https://librosa.org/) library
+- FastAPI for the excellent web framework
+- The open-source community for various tools and libraries
 
-## Future Enhancements
+## 📞 Support
 
-- [ ] Support for larger databases with optimized indexing
-- [ ] Real-time audio recognition from microphone input
-- [ ] Advanced noise reduction and audio preprocessing
-- [ ] Machine learning-based confidence scoring
-- [ ] Support for audio streaming protocols
-- [ ] Multi-threaded processing for better performance
+If you encounter any issues or have questions:
+1. Check the [API documentation](http://localhost:8000/docs) when running
+2. Run the test client to verify setup
+3. Open an issue on GitHub
+
+---
+
+**Made with ❤️ for music lovers and developers**
