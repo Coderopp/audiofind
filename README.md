@@ -22,8 +22,7 @@ A Python-based audio fingerprinting system that can identify songs from short au
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Shazam-style-audio-recognition-engine.git
-cd Shazam-style-audio-recognition-engine
+git clone https://github.com/Coderopp/audiofind.git
 ```
 
 2. Create a virtual environment:
