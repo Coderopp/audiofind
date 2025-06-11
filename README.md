@@ -1,4 +1,4 @@
-# 🎵 Shazam-Style Audio Recognition Engine
+# 🎵 AudioFind - Shazam-Style Audio Recognition Engine
 
 A powerful audio fingerprinting and recognition system built with Python and FastAPI that can identify songs from audio snippets, similar to Shazam.
 
@@ -36,8 +36,7 @@ A powerful audio fingerprinting and recognition system built with Python and Fas
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/shazam-style-audio-recognition.git
-   cd shazam-style-audio-recognition
+   git clone https://github.com/coderopp/audiofind.git
    ```
 
 2. **Create a virtual environment**
